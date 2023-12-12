@@ -1,3 +1,15 @@
 .coin-logo {
   height: 24px;
+  background-color: red;
+  animation-duration: 4s;
+  animation: iconBgColor 2s infinite;
+}
+
+@keyframes iconBgColor {
+  from {
+    background-color: red;
+  }
+  to {
+    background-color: green;
+  }
 }

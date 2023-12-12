@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getLatestCryptoListings, getLogos } from "../app/thunk.js";
 import { useEffect, useState, Fragment } from "react";
+import PageLoader from "../components/PageLoader";
 import {
   IoMdArrowDropup,
   IoMdArrowDropdown,
@@ -14,6 +15,7 @@ const Home = () => {
   const cryptoList = useSelector(
     (state) => state.crypto.cryptoList?.data?.data
   );
+  const { isLoading } = useSelector((state) => state.crypto.cryptoList);
   const coinInfos = useSelector(
     (state) => state?.crypto?.coinInfos?.data?.data
   );
@@ -41,6 +43,10 @@ const Home = () => {
 
   const profitOrLoss = (condition) =>
     condition ? <IoMdArrowDropup size={20} /> : <IoMdArrowDropdown size={20} />;
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <Fragment>

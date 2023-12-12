@@ -29,10 +29,11 @@ export const cryptoSlice = createSlice({
     //cryptoList
     builder.addCase(getLatestCryptoListings.rejected, (state, { payload }) => {
       state.cryptoList.errorMessage = payload;
-      state.isLoading = false;
+      state.cryptoList.isLoading = false;
     });
     builder.addCase(getLatestCryptoListings.fulfilled, (state, { payload }) => {
       state.cryptoList.data = payload;
+      state.cryptoList.isLoading = false;
     });
     builder.addCase(getLatestCryptoListings.pending, (state) => {
       state.cryptoList.isLoading = true;
@@ -42,7 +43,7 @@ export const cryptoSlice = createSlice({
     // Logos
     builder.addCase(getLogos.rejected, (state, { payload }) => {
       state.coinInfos.errorMessage = payload;
-      state.isLoading = false;
+      state.coinInfos.isLoading = false;
     });
     builder.addCase(getLogos.fulfilled, (state, { payload }) => {
       state.coinInfos.data = payload;

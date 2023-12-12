@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import CoinMarketServices from "../services";
 import { getLatestCryptoListings, getLogos } from "../app/thunk.js";
+import PageLoader from "../components/PageLoader";
 
 const Convertor = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const Convertor = () => {
   const coinInfos = useSelector(
     (state) => state?.crypto?.coinInfos?.data?.data
   );
+  const { isLoading } = useSelector((state) => state.crypto.cryptoList);
 
   useEffect(() => {
     !cryptoList &&
@@ -69,6 +71,10 @@ const Convertor = () => {
     });
   };
 
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
   return (
     <Fragment>
       <div className="my-3">
@@ -91,12 +97,13 @@ const Convertor = () => {
             }
           />
         </div>
-        <FaArrowRightArrowLeft
-          className="text-light"
-          role="button"
-          size={24}
-          onClick={() => handleConversion()}
-        />
+        <button className="btn btn-sm">
+          <FaArrowRightArrowLeft
+            className="text-light"
+            size={24}
+            onClick={() => handleConversion()}
+          />
+        </button>
         <div className="col-6 offset-3 my-4">{dropdown("convertSymbol")}</div>
         {convertedValue && (
           <div className="col-6 offset-3 text-light d-flex justify-content-center">
