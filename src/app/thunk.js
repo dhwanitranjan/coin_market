@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import CoinMarketServices from "../services";
 
 const getAxiosError = (error) =>
-  error.response?.data.errors?.[0].message ?? error.message;
+  error.response?.data?.errors?.[0].message ?? error.message;
 
 export const getLatestCryptoListings = createAsyncThunk(
   "crypto/list",
@@ -11,7 +11,6 @@ export const getLatestCryptoListings = createAsyncThunk(
       const { data } = await CoinMarketServices.getLatestCryptoListings();
       return data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(getAxiosError(error));
     }
   }
