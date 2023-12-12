@@ -13,6 +13,11 @@ const CoinMarketServices = {
       `${baseURL}/v2/cryptocurrency/info?CMC_PRO_API_KEY=${key}&id=${ids}`
     );
   },
+  priceConversion: function (amount, convert, symbol) {
+    return axios.get(
+      `${baseURL}/v2/tools/price-conversion?CMC_PRO_API_KEY=${key}&amount=${amount}&convert=${convert}&symbol=${symbol}`
+    );
+  },
 };
 
 export default CoinMarketServices;

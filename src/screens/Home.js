@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getLatestCryptoListings, getLogos } from "../app/thunk.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import {
   IoMdArrowDropup,
   IoMdArrowDropdown,
@@ -19,6 +19,7 @@ const Home = () => {
   );
   const [displayCryptos, setDisplayCryptos] = useState();
   const [pageNo, setPageNo] = useState(0);
+
   useEffect(() => {
     setDisplayCryptos(
       cryptoList?.slice(pageNo * pageSize, (pageNo + 1) * pageSize)
@@ -26,10 +27,12 @@ const Home = () => {
   }, [pageNo, cryptoList]);
 
   useEffect(() => {
-    dispatch(getLatestCryptoListings()).then(({ payload }) => {
-      const ids = payload.data?.map((item) => item.id).join(",");
-      dispatch(getLogos(ids));
-    });
+    !cryptoList &&
+      !coinInfos &&
+      dispatch(getLatestCryptoListings()).then(({ payload }) => {
+        const ids = payload.data?.map((item) => item.id).join(",");
+        dispatch(getLogos(ids));
+      });
     setPageNo(0);
   }, []);
 
@@ -40,7 +43,7 @@ const Home = () => {
     condition ? <IoMdArrowDropup size={20} /> : <IoMdArrowDropdown size={20} />;
 
   return (
-    <div>
+    <Fragment>
       <table className="table table-dark table-striped">
         <thead>
           <tr>
@@ -132,7 +135,7 @@ const Home = () => {
           </div>
         )}
       </div>
-    </div>
+    </Fragment>
   );
 };
 
