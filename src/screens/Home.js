@@ -33,17 +33,29 @@ const Home = () => {
     setPageNo(0);
   }, []);
 
+  const displayValue = (val, limit = 2) =>
+    val.toFixed(limit).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  const profitOrLoss = (condition) =>
+    condition ? <IoMdArrowDropup size={20} /> : <IoMdArrowDropdown size={20} />;
+
   return (
     <div>
-      <table class="table table-dark table-striped">
+      <table className="table table-dark table-striped">
         <thead>
           <tr>
-            <th scope="col">#</th>
+            <th className="d-none d-sm-table-cell" scope="col">
+              #
+            </th>
             <th scope="col">Name</th>
-            <th scope="col">Price</th>
+            <th className="d-none d-sm-table-cell" scope="col">
+              Price
+            </th>
             <th scope="col">24h %</th>
             <th scope="col">7d %</th>
-            <th scope="col">Market Cap</th>
+            <th className="d-none d-sm-table-cell" scope="col">
+              Market Cap
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -51,9 +63,11 @@ const Home = () => {
             const rates = coin.quote.USD;
             return (
               <tr key={coin.id}>
-                <th>{pageNo * pageSize + i + 1}</th>
+                <th className="d-none d-sm-table-cell">
+                  {pageNo * pageSize + i + 1}
+                </th>
                 <td>
-                  <div className="d-flex">
+                  <div className="d-flex text-truncate">
                     <img
                       src={coinInfos?.[coin.id]?.logo}
                       className="rounded coin-logo"
@@ -63,7 +77,7 @@ const Home = () => {
                     <p className="fw-light">{coin.symbol}</p>
                   </div>
                 </td>
-                <td>
+                <td className="d-none d-sm-table-cell">
                   $
                   {rates.price > 1
                     ? rates.price.toFixed(2)
@@ -73,31 +87,25 @@ const Home = () => {
                 </td>
                 <td
                   className={`${
-                    rates.percent_change_24h < 0
+                    rates.percent_change_24h > 0
                       ? "text-success"
                       : "text-danger"
                   }`}
                 >
-                  {rates.percent_change_24h < 0 ? (
-                    <IoMdArrowDropup size={20} />
-                  ) : (
-                    <IoMdArrowDropdown size={20} />
-                  )}
-                  {rates.percent_change_24h.toFixed(2)}
+                  {profitOrLoss(rates.percent_change_24h > 0)}
+                  {displayValue(rates.percent_change_24h)}
                 </td>
                 <td
                   className={`${
-                    rates.percent_change_7d < 0 ? "text-success" : "text-danger"
+                    rates.percent_change_7d > 0 ? "text-success" : "text-danger"
                   }`}
                 >
-                  {rates.percent_change_7d < 0 ? (
-                    <IoMdArrowDropup size={20} />
-                  ) : (
-                    <IoMdArrowDropdown size={20} />
-                  )}
-                  {rates.percent_change_7d.toFixed(2)}
+                  {profitOrLoss(rates.percent_change_7d > 0)}
+                  {displayValue(rates.percent_change_7d)}
                 </td>
-                <td>${rates.market_cap.toFixed(2)}</td>
+                <td className="d-none d-sm-table-cell">
+                  ${displayValue(rates.market_cap)}
+                </td>
               </tr>
             );
           })}
